@@ -1,5 +1,5 @@
 // see SignupForm.js for comments
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 
 import {useMutation} from '@apollo/client';
@@ -13,14 +13,14 @@ const LoginForm = () => {
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
-  const [login, {error}] = useMutation(LOGIN_USER);
+  const [loginUser] = useMutation(LOGIN_USER);
 
-  useEffect(()=>{
-    if(error){
-      setShowAlert(true);
-    } else{setShowAlert(false);
-    }
-  },[error]);
+  // useEffect(()=>{
+  //   if(error){
+  //     setShowAlert(true);
+  //   } else{setShowAlert(false);
+  //   }
+  // },[error]);
 
 
   const handleInputChange = (event) => {
@@ -39,9 +39,10 @@ const LoginForm = () => {
     }
 
     try {
-      const {data} = await login(
-        {variables: {...userFormData}
-      });
+      const data = await loginUser(
+        {variables: {email: userFormData.email,
+        password: userFormData.password}
+      })
       Auth.login(data.login.token);
       } catch (err) {
       console.error(err);
@@ -49,6 +50,7 @@ const LoginForm = () => {
     }
 
     setUserFormData({
+      username:'',
       email: '',
       password: '',
     });
@@ -58,7 +60,7 @@ const LoginForm = () => {
     <>
       <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
         <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
-          Something went wrong with your login credentials!
+          Something went wrong with your login credentials! 😟
         </Alert>
         <Form.Group className='mb-3'>
           <Form.Label htmlFor='email'>Email</Form.Label>

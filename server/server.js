@@ -7,7 +7,7 @@ const path = require('path');
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
 const { authMiddleware } = require('./utils/auth');
-require('dotenv').config();
+
 // Comment out this code once you have built out queries and mutations in the client folder
 //const routes = require('./routes');
 
